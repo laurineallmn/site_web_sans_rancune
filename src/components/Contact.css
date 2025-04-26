@@ -2,6 +2,24 @@
     margin: 0rem 2rem;
 }
 
-h5 {
-    color: #C1121F;
+h2 {
+    color: #669BBC;
+}
+
+.logo-text-line {
+    display: flex;
+    flex-direction: line;
+    justify-content: left;
+    align-items: center;
+}
+
+.logo-text-line img {
+    width: 30px;
+    min-width: 30px;
+    max-width: 30px;
+    margin: 0.5rem;
+}
+
+.logo-text-line a:hover {
+    cursor: pointer;
 }

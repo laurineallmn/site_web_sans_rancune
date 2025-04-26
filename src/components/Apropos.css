@@ -5,3 +5,7 @@
 span {
     color: #C1121F;
 }
+
+#a-propos a {
+    text-decoration: none;
+}

@@ -8,3 +8,12 @@ body {
     color: #FDF0D5;
     /* background-color: #FDF0D5 */
 }
+
+.ligne::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #8f0101;
+    /* margin: 20px 0; */
+}
