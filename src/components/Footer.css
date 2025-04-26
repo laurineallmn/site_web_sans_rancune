@@ -1,0 +1,33 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+#footer-container {
+    margin-top: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    /* background-color: white; */
+    background-color: #003049;
+}
+
+#footer-left-container {
+    margin: 1vw;
+}
+
+#footer-left-container h3 {
+    text-decoration: none;
+    color: #669BBC;
+}
+
+#footer-left-container h3:hover {
+    color: white;
+}
+
+#footer-right-container {
+    margin: 1vw;
+}

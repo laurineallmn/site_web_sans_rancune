@@ -1,0 +1,82 @@
+/* @font-face {
+    font-family: 'Liquidity';
+    src: url('../../font-family/Liquidity_Demo.ttf') format('truetype');
+} */
+
+#navbar {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 0 2rem; */
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #003049;
+}
+
+#navbar h1 {
+    margin: 0 2rem;
+    color: #669BBC;
+    /* font-family: 'Liquidity', 'Segoe UI', Tahoma, Verdana, sans-serif; */
+}
+
+#navbar h3 {
+    background-color: #C1121F;
+    padding: 0.5rem 2rem;
+    color: white;
+    border-radius: 1em;
+    font-family: 'Liquidity', 'Segoe UI', Tahoma, Verdana, sans-serif;
+    overflow: hidden;
+    box-shadow: black;
+}
+
+#navbar h1:hover {
+    color: black;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+#navbar h3:hover {
+    color: black;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+#navbar a {
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    #navbar {
+        margin-top: 0rem;
+        margin-bottom: 0rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+    #navbar {
+        flex-direction: column;
+        text-align: center;
+    }
+    #navbar h1 {
+        margin: 0.5rem 0;
+        /* font-size: 2rem; */
+    }
+    #navbar h3 {
+        /* flex-direction: column; */
+        margin: 0.5rem 0;
+        font-size: 1rem;
+    }
+    #navbar-pages {
+        flex-direction: column;
+        text-align: center;
+    }
+    /* #checkbox-container {
+    flex-direction: column;
+    align-items: center;
+} */
+}
