@@ -30,7 +30,7 @@ export default function Video() {
   const scene = videosData.find(s => s.id === currentSceneId) || videosData[0]; // fallback (solution de secours si 1st solution ne marhce pas)
 
 
-  // Charger le timecode depuis localStorage quand la page charge
+  // pour charger le timecode depuis localStorage quand la page charge
   useEffect(() => {
     const storedTime = localStorage.getItem('videoSavedTime');
     if (storedTime && videoRef.current) {
@@ -39,7 +39,7 @@ export default function Video() {
     }
   }, []);
 
-   // Sauvegarder dans l'état ET dans localStorage
+   // pour sauvegarder dans l'état ET dans localStorage
    const saveVideoState = () => {
     if (videoRef.current) {
       const current = videoRef.current.currentTime;
@@ -66,9 +66,6 @@ export default function Video() {
     const parts = tc.split(':').map(p => parseInt(p, 10));
     const [h, m, s] = parts;
     return (h * 3600) + (m * 60) + s;
-    //ce calcul decale son et image (son est en avance)
-    // const [h, m, s, frames] = parts;
-    // return (h * 3600) + (m * 60) + s + (frames / 25); // 25 fps classique
   };
 
   ///
@@ -99,11 +96,7 @@ export default function Video() {
     return () => clearInterval(interval);
   }, [startDisplay, endDisplay, questionAlreadyAnswered, defaultNextSceneId]);
   
-  ///
-  // const handleChoiceClick = (nextSceneId) => {
-  //   setQuestionAlreadyAnswered(true);
-  //   goTo(`/playing/${nextSceneId}`);
-  // };
+
 
   const handleChoiceClick = (choice) => {
     if (choice.timecode_jump && videoRef.current) {
@@ -114,6 +107,7 @@ export default function Video() {
   };
 
   /// si timecode_fin_scene est atteint ET qu'il existe un timecode_jump_next_scene, alors on avance automatiquement vers timecode_jump_next_scene.
+  /// utile surtout pour passer de historique de recherche à "chambre-fin"
   useEffect(() => {
     const interval = setInterval(() => {
       if (videoRef.current) {
@@ -145,7 +139,7 @@ export default function Video() {
                 disablePictureInPicture
                 controlsList="nodownload noremoteplayback noplaybackrate nofullscreen"
             />
-        {/* <button onClick={saveVideoState}>Sauver état</button> */}
+
         {/* BOUTON MENU */}
         <div className="menu-container">
           <button className={`menu-button ${menuOpen ? 'open' : ''}`} onClick={toggleMenu}>
@@ -165,7 +159,6 @@ export default function Video() {
                 videoRef.current.currentTime = 0; // remet la vidéo au début
               }
               localStorage.removeItem('videoSavedTime');  //remet le timecode à zéro
-              // localStorage.removeItem('hasStarted');  // pour mettre bouton à "LANCER PARTIE" au lieu de "CONTINUER")
               navigate('/playing'); // on recharge la page de jeu
               }}>Recommencer</button>
 

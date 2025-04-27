@@ -35,7 +35,7 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <Header /> {/* on passe la variable hasStarted au Header */}
+      <Header />
 
       {/* {!buttonPlayClicked && ( */}
         <div className={`trailer-background-container ${isFading ? 'fade-out' : ''}`}>
