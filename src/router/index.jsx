@@ -15,6 +15,10 @@ export default createBrowserRouter([
     element: <Video/>,
   },
   {
+    path : "/playing/:id", 
+    element : <Video/>
+  },
+  {
     path: "/notice",
     element: <Notice/>,
   },

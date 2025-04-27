@@ -18,6 +18,8 @@ export default function Notice(){
                     <br /><br />
                     ATTENTION : si tu lances une partie tu ne pourras pas la faire revenir au début tant que tu ne la pas fini ! Concentre-toi bien ! (C'est pour nous assurer que tes statistiques seront fiables)
                     <br /><br />
+                    Une partie dure approximativmeent 40minutes.
+                    <br /><br />
                     Petit bonus motivant : à la fin, on t'affiche tes statistiques. Sauras-tu résoudre l’affaire comme un(e) pro ?
                 </p>
             </div>
