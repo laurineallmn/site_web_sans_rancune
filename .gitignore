@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Ignorer toutes les vidéos dans assets/video
+assets/video/*
+# Ignorer aussi tous les fichiers .mp4 partout
+*.mp4
+*.mov

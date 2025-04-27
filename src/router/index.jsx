@@ -11,7 +11,7 @@ export default createBrowserRouter([
     element: <App/>,
   },
   {
-    path: "/play",
+    path: "/playing",
     element: <Video/>,
   },
   {

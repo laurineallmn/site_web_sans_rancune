@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
+import './Video.css';
 
 export default function Video() {
   const videoRef = useRef(null);
@@ -21,8 +22,22 @@ export default function Video() {
 
   return (
     <div>
-      <video ref={videoRef} src="/video.mp4" controls />
-      <button onClick={saveVideoState}>Sauver état</button>
+      {/* <Header/> */}
+      {/* <p>Lol</p> */}
+      <div className="video-container">
+        <video
+                className="video-sans-rancune"
+                ref={videoRef} 
+                src="../../assets/video/montage_chambre_02.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                disablePictureInPicture
+                controlsList="nodownload noremoteplayback noplaybackrate nofullscreen"
+            />
+        <button onClick={saveVideoState}>Sauver état</button>
+      </div>
     </div>
   );
 }

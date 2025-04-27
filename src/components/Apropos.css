@@ -9,3 +9,7 @@ span {
 #a-propos a {
     text-decoration: none;
 }
+
+#a-propos h2 {
+    color: #669BBC;
+}
