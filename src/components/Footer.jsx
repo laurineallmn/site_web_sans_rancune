@@ -5,7 +5,7 @@ export default function Footer(){
         <div id="footer-container">
             <div id="footer-left-container">
             <a href="./"><h3>SANS RANCUNE</h3></a>
-            <p>© 2025 — Laurine ALLEMON, Théo BONNOT, Nolan BOURREL, Jean LECHAUDELEC</p>
+            <p>© 2025 — Laurine ALLEMON, Théo BONNOT, Nolan BOURREL, Jean LE CHAUDELEC</p>
             </div>
             <div id="footer-right-container">
                 <p>Legal notices</p>

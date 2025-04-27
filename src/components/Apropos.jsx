@@ -18,11 +18,11 @@ export default function Apropos(){
 
                 <h4>Crédits</h4>
                 <ul>
-                    <li>Réalisateurs : Théo BONNOT, Nolan BOURREL</li>
+                    <li>Réalisateurs : Théo BONNOT et Nolan BOURREL</li>
                     <li>Acteurs : Jean LE CHAUDELEC, Vanessa BONNEAU, Laura GASQUEZ, Antoine LOUBEZ, Milo TURINES, Geoffray ODOT</li>
-                    <li>Scénario : Théo BONNOT </li>
+                    <li>Scénario : Théo BONNOT et Jean LE CHAUDELEC </li>
                     <li>Montage : Laurine ALLEMON, Théo BONNOT, Nolan BOURREL, Jean LE CHAUDELEC</li>
-                    <li>Maquillage : Sarah </li>
+                    <li>Maquillage : Sarah Bojeaux</li> {/* je sais plus comment ca s'ecrit sorryyy */}
                     {/* <li>Musique : </li> */}
                     {/* <li>Effets spéciaux : </li> */}
                     <li>Merci spécial à l'IMAC et Léon GOMEZ notre incroyable tuteur !</li>

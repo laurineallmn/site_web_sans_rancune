@@ -66,7 +66,6 @@ export default function Video() {
                 ref={videoRef} 
                 src="../../assets/video/montage_chambre_02.mp4"
                 autoPlay
-                muted
                 loop
                 playsInline
                 disablePictureInPicture
@@ -86,8 +85,12 @@ export default function Video() {
             <div className="menu-items">
               <button onClick={() => { saveVideoState(); goTo('/'); }}>Quitter</button>
               <button onClick={() => { saveVideoState(); goTo('/notice'); }}>Notice</button>
-              {/* <button onClick={() => goTo('/playing')}>Recommencer</button> */}
-              {/* si on veut un bouton recommencer il faudra faire : localStorage.removeItem('videoSavedTime'); */}
+              <button onClick={() => {
+                localStorage.removeItem('videoSavedTime'); //remet le timecode à zéro
+                localStorage.removeItem('hasStarted'); // pour mettre bouton à "LANCER PARTIE" au lieu de "CONTINUER")
+                navigate('/playing'); // on recharge la page de jeu
+              }}>Recommencer</button>
+             
               {/* <button onClick={() => { saveVideoState(); goTo('/playing-english-garder-current-timecode');}}>Changer de langue</button> */}
             </div>
           )}
