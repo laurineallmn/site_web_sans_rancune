@@ -16,6 +16,8 @@ export default function Notice(){
                     <br /><br />
                     Tu es LE commissaire : chaque décision compte, chaque erreur peut changer l’issue du meurtre... Alors ouvre l'œil et reste vif ! 👀  
                     <br /><br />
+                    ATTENTION : si tu lances une partie tu ne pourras pas la faire revenir au début tant que tu ne la pas fini ! Concentre-toi bien ! (C'est pour nous assurer que tes statistiques seront fiables)
+                    <br /><br />
                     Petit bonus motivant : à la fin, on t'affiche tes statistiques. Sauras-tu résoudre l’affaire comme un(e) pro ?
                 </p>
             </div>

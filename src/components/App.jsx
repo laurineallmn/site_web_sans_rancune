@@ -11,6 +11,7 @@ export default function App() {
   // const [buttonPlayClicked, setButtonPlayClicked] = useState(false);
   const [isFading, setIsFading] = useState(false);
 
+  //permettra d'aller vers la page video plus bas dans le code
   const navigate = useNavigate();
 
   const handleStart = () => {
