@@ -12,18 +12,38 @@ export default function Video() {
   //permettra d'aller vers une autre page plus bas dans le code
   const navigate = useNavigate();
 
+  // 1st verison
   // Quand on arrive, on remet la vidéo au bon moment
+  // useEffect(() => {
+  //   if (videoRef.current) {
+  //     videoRef.current.currentTime = savedTime;
+  //     videoRef.current.play();
+  //   }
+  // }, [savedTime]);
+
+  // Charger le timecode depuis localStorage quand la page charge
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.currentTime = savedTime;
+    const storedTime = localStorage.getItem('videoSavedTime');
+    if (storedTime && videoRef.current) {
+      videoRef.current.currentTime = parseFloat(storedTime);
       videoRef.current.play();
     }
-  }, [savedTime]);
+  }, []);
 
+  // 1st version
   // Fonction pour sauvegarder l'état avant de quitter
-  const saveVideoState = () => {
+  // const saveVideoState = () => {
+  //   if (videoRef.current) {
+  //     setSavedTime(videoRef.current.currentTime);
+  //   }
+  // };
+
+   // Sauvegarder dans l'état ET dans localStorage
+   const saveVideoState = () => {
     if (videoRef.current) {
-      setSavedTime(videoRef.current.currentTime);
+      const current = videoRef.current.currentTime;
+      setSavedTime(current);
+      localStorage.setItem('videoSavedTime', current); // <-- STOCKAGE
     }
   };
 
@@ -40,7 +60,6 @@ export default function Video() {
 
   return (
     <div>
-      {/* <Header/> */}
       <div className="video-container">
         <video
                 className="video-sans-rancune"
@@ -68,6 +87,7 @@ export default function Video() {
               <button onClick={() => { saveVideoState(); goTo('/'); }}>Quitter</button>
               <button onClick={() => { saveVideoState(); goTo('/notice'); }}>Notice</button>
               {/* <button onClick={() => goTo('/playing')}>Recommencer</button> */}
+              {/* si on veut un bouton recommencer il faudra faire : localStorage.removeItem('videoSavedTime'); */}
               {/* <button onClick={() => { saveVideoState(); goTo('/playing-english-garder-current-timecode');}}>Changer de langue</button> */}
             </div>
           )}
