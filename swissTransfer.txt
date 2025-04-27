@@ -1,0 +1,11 @@
+SWISS TRANSFER
+
+https://www.swisstransfer.com/d/701b249c-e8f2-4a29-b29d-91b7f46dd0d1
+
+Vu que j'ai mis un gitignore pour les video mp4 voici les liens pour les récupérer !
+
+Mettre les video dans dossier dans assets/Video 
+
+1) celle qui correpondra au trailer (qui s'affiche des la page d'accueil): bande_annonce.mp4
+
+2) celle qui correspondra à la longue video d'une heure (qui s'affichera si on appye sur jouer): montage_chambre_02
