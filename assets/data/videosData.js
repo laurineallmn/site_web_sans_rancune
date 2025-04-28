@@ -15,7 +15,7 @@ const videosData = [
         timecode_display_question: '0:02:13:00', //display suelement si QTE reussi
         timecode_remove_question: '0:02:19:00',
         timecode_display_qte: '0:1:17:0',
-        timecode_remove_qte: '0:1:19:0',
+        timecode_remove_qte: '0:1:18:0',
         // uniquement si QTE reussi
         question: 'Que souhaitez-vous visionner ?',
         choices: [
