@@ -151,7 +151,7 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
   
         // Jouer le son QTE 1 seconde avant l'affichage du QTE
         if (!qteSucceeded && !qteAlreadyFailed && 
-            current >= (startQTE - 1) && current < startQTE) {
+            current >= (startQTE - 0.35) && current < startQTE) {
           if (audioQTERef.current) {
             audioQTERef.current.play().catch(e => console.log("Erreur audio:", e));
           }
