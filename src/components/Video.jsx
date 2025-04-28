@@ -28,6 +28,8 @@ export default function Video() {
   const [showQTE, setShowQTE] = useState(false);
   const [qteSucceeded, setQteSucceeded] = useState(false);
   const [qteAlreadyFailed, setQteAlreadyFailed] = useState(false);
+  const [qteProgress, setQteProgress] = useState(100); // en pourcentage
+
 
 
 
@@ -139,7 +141,7 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
   
   useEffect(() => {
     setQteAlreadyFailed(false); // réinitialiser l'état à chaque changement de scène
-  }, [scene]);;
+  }, [scene]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -186,7 +188,28 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
     };
   }, [showQTE, scene]);
   
+  useEffect(() => {
+    let interval;
   
+    if (showQTE) {
+      const duration = (endQTE - startQTE) * 1000; // en millisecondes
+      const startTime = Date.now();
+  
+      interval = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.max(0, 100 - (elapsed / duration) * 100);
+        setQteProgress(progress);
+  
+        if (progress <= 0) {
+          clearInterval(interval);
+        }
+      }, 50); // actualisation fluide
+    } else {
+      setQteProgress(100); // reset quand pas de QTE
+    }
+  
+    return () => clearInterval(interval);
+  }, [showQTE, startQTE, endQTE]);
   
   
   return (
@@ -204,9 +227,26 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
  {/* ICI, TON AFFICHAGE QTE */}
  {showQTE && (
   <div className={`qte-container ${qteSucceeded ? 'qte-success' : qteAlreadyFailed ? 'qte-fail' : ''}`}>
-    <p>Appuyez sur "{scene.keyboard[0]?.label}" !</p>
+    <div className="qte-circle-wrapper">
+      <svg className="qte-circle" viewBox="0 0 100 100">
+        <circle className="qte-circle-bg" cx="50" cy="50" r="45" />
+        <circle
+          className="qte-circle-fg"
+          cx="50"
+          cy="50"
+          r="45"
+          style={{
+            strokeDasharray: 282, // 2 * PI * r (2 * 3.14 * 45)
+            strokeDashoffset: (282 * (100 - qteProgress)) / 100,
+          }}
+        />
+      </svg>
+      <div className="qte-text">{scene.keyboard[0]?.label.toUpperCase()}</div>
+    </div>
   </div>
 )}
+
+
 
 
         {/* BOUTON MENU */}
