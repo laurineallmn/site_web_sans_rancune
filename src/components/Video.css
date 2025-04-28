@@ -1,5 +1,4 @@
 /* LA VIDEO PRINCIPALE */
-
 .video-container {
     position: relative;
     width: 100%;
@@ -16,9 +15,7 @@
     z-index: 0;
 }
 
-
 /* LE CONTENANT DU BOUTON MENU */
-
 .menu-container {
     position: absolute;
     top: 20px;
@@ -26,9 +23,7 @@
     z-index: 10;
 }
 
-
 /* LE BOUTON MENU */
-
 .menu-button {
     background-color: #FDF0D5;
     border: none;
@@ -44,9 +39,7 @@
     transition: 0.4s;
 }
 
-
 /* LES 3 BARRES pour indiquer le menu */
-
 .menu-button .bar1,
 .menu-button .bar2,
 .menu-button .bar3 {
@@ -57,9 +50,7 @@
     transition: 0.4s;
 }
 
-
 /* ANIMATION CROIX quand menu ouvert */
-
 .menu-button.open .bar1 {
     transform: rotate(45deg) translate(5px, 5px);
 }
@@ -72,9 +63,7 @@
     transform: rotate(-45deg) translate(6px, -6px);
 }
 
-
 /* LES BOUTONS DU MENU */
-
 .menu-items {
     margin-top: 10px;
     display: flex;
@@ -98,34 +87,33 @@
 }
 
 /* QTE CONTAINER */
-
 .qte-container {
     position: absolute;
-    top: 20%;
-    left: 50%;
+    top: 50%;  /* Centré verticalement */
+    left: 50%; /* Centré horizontalement */
     transform: translate(-50%, -50%);
     color: black;
     font-size: 2rem;
     font-weight: bold;
     transition: background-color 0.5s ease, transform 0.3s ease;
-}
-
-.qte-container {
-    background-color: rgba(255, 255, 255, 0.7);
-    padding: 20px 40px;
-    border-radius: 20px;
-    font-size: 2rem;
-    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.7); /* Fond semi-transparent */
+    padding: 0;  /* Retirer ou ajuster le padding pour éviter le débordement */
+    border-radius: 50%; /* Transforme le fond en cercle */
+    width: 200px;  /* Largeur du cercle */
+    height: 200px; /* Hauteur du cercle */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     animation: pulse 1s infinite alternate;
 }
 
 /* Animation douce pendant le QTE actif */
 @keyframes pulse {
     from {
-        transform: translateX(-50%) scale(1);
+        transform: scale(1);
     }
     to {
-        transform: translateX(-50%) scale(1.05);
+        transform: scale(1.05);
     }
 }
 
@@ -144,41 +132,40 @@
 /* Animation réussite : petit pop */
 @keyframes popSuccess {
     0% {
-        transform: translateX(-50%) scale(1);
+        transform: scale(1);
     }
     50% {
-        transform: translateX(-50%) scale(1.2);
+        transform: scale(1.2);
     }
     100% {
-        transform: translateX(-50%) scale(1);
+        transform: scale(1);
     }
 }
 
 /* Animation échec : secousse */
 @keyframes shakeFail {
     0% {
-        transform: translateX(-50%) translateX(0);
+        transform: translateX(0);
     }
     25% {
-        transform: translateX(-50%) translateX(-10px);
+        transform: translateX(-10px);
     }
     50% {
-        transform: translateX(-50%) translateX(10px);
+        transform: translateX(10px);
     }
     75% {
-        transform: translateX(-50%) translateX(-10px);
+        transform: translateX(-10px);
     }
     100% {
-        transform: translateX(-50%) translateX(0);
+        transform: translateX(0);
     }
 }
 
 /* CERCLE QTE */
-
 .qte-circle-wrapper {
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 100%; /* La largeur prend la taille du parent */
+    height: 100%; /* La hauteur prend la taille du parent */
 }
 
 .qte-circle {
