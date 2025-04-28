@@ -151,11 +151,14 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
         }
   
         if (!qteSucceeded && !qteAlreadyFailed && current > endQTE) {
-          setShowQTE(false); // on enlève le QTE visuellement
-          if (failTimecode) {
-            videoRef.current.currentTime = failTimecode; // QTE échoué, on saute au timecode d'échec
-            setQteAlreadyFailed(true); // <- IMPORTANT : on marque que l'échec est déjà traité
-          }
+          setQteAlreadyFailed(true); // d'abord marquer l'échec
+  
+          setTimeout(() => {
+            setShowQTE(false); // cacher après 1 seconde d'affichage en rouge
+            if (failTimecode) {
+              videoRef.current.currentTime = failTimecode;
+            }
+          }, 1000);
         }
       }
     }, 200);
@@ -163,13 +166,17 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
     return () => clearInterval(interval);
   }, [startQTE, endQTE, qteSucceeded, failTimecode, qteAlreadyFailed]);
   
+  
 
   useEffect(() => {
     const handleKeyPress = (event) => {
       const expectedKey = scene.keyboard.length > 0 ? scene.keyboard[0].label.toLowerCase() : null;
       if (showQTE && expectedKey && event.key.toLowerCase() === expectedKey) {
         setQteSucceeded(true);
-        setShowQTE(false); // on cache le QTE
+  
+        setTimeout(() => {
+          setShowQTE(false);
+        }, 1000); // attendre 1 seconde pour afficher la réussite visuellement
       }
     };
   
@@ -178,6 +185,7 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
       window.removeEventListener('keydown', handleKeyPress);
     };
   }, [showQTE, scene]);
+  
   
   
   
@@ -195,10 +203,12 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
             />
  {/* ICI, TON AFFICHAGE QTE */}
  {showQTE && (
-      <div className="qte-container">
-        <p>Appuyez sur "{scene.keyboard[0]?.label}" !</p>
-      </div>
-    )}
+  <div className={`qte-container ${qteSucceeded ? 'qte-success' : qteAlreadyFailed ? 'qte-fail' : ''}`}>
+    <p>Appuyez sur "{scene.keyboard[0]?.label}" !</p>
+  </div>
+)}
+
+
         {/* BOUTON MENU */}
         <div className="menu-container">
           <button className={`menu-button ${menuOpen ? 'open' : ''}`} onClick={toggleMenu}>
