@@ -11,6 +11,7 @@ export default function Video() {
 
   //pour se souvenir du timecode où la personne était (sil change de page)
   const videoRef = useRef(null);
+  const audioQTERef = useRef(null);
   //permettra d'aller vers une autre page plus bas dans le code
   const navigate = useNavigate();
   ///pour savoir dans quel url est l'user
@@ -148,15 +149,23 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
       if (videoRef.current) {
         const current = videoRef.current.currentTime;
   
+        // Jouer le son QTE 1 seconde avant l'affichage du QTE
+        if (!qteSucceeded && !qteAlreadyFailed && 
+            current >= (startQTE - 1) && current < startQTE) {
+          if (audioQTERef.current) {
+            audioQTERef.current.play().catch(e => console.log("Erreur audio:", e));
+          }
+        }
+  
         if (!qteSucceeded && current >= startQTE && current <= endQTE) {
           setShowQTE(true);
         }
   
         if (!qteSucceeded && !qteAlreadyFailed && current > endQTE) {
-          setQteAlreadyFailed(true); // d'abord marquer l'échec
+          setQteAlreadyFailed(true);
   
           setTimeout(() => {
-            setShowQTE(false); // cacher après 1 seconde d'affichage en rouge
+            setShowQTE(false);
             if (failTimecode) {
               videoRef.current.currentTime = failTimecode;
             }
@@ -224,6 +233,7 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
                 disablePictureInPicture
                 controlsList="nodownload noremoteplayback noplaybackrate nofullscreen"
             />
+            <audio ref={audioQTERef} src="../../assets/audio/QTE.mp3" preload="auto"></audio>
  {/* ICI, TON AFFICHAGE QTE */}
  {showQTE && (
   <div className={`qte-container ${qteSucceeded ? 'qte-success' : qteAlreadyFailed ? 'qte-fail' : ''}`}>
