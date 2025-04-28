@@ -30,6 +30,8 @@ export default function Video() {
   const [qteSucceeded, setQteSucceeded] = useState(false);
   const [qteAlreadyFailed, setQteAlreadyFailed] = useState(false);
   const [qteProgress, setQteProgress] = useState(100); // en pourcentage
+  const [isPaused, setIsPaused] = useState(false);
+
 
 
 
@@ -94,10 +96,14 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
   
         if (!questionAlreadyAnswered && current >= startDisplay && current <= endDisplay) {
           setShowQuestion(true);
+          if (!isPaused) {
+            videoRef.current.pause();  // Mettre en pause la vidéo
+            setIsPaused(true);  // Mettre à jour l'état pour indiquer que la vidéo est en pause
+          }
         }
   
         if (!questionAlreadyAnswered && current > endDisplay) {
-          setShowQuestion(false); // pour cacher les boutons et question s'il est trop tard
+          setShowQuestion(false);
           if (defaultNextSceneId) {
             goTo(`/playing/${defaultNextSceneId}`);
           }
@@ -107,17 +113,21 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
     }, 500);
   
     return () => clearInterval(interval);
-  }, [startDisplay, endDisplay, questionAlreadyAnswered, defaultNextSceneId]);
+  }, [startDisplay, endDisplay, questionAlreadyAnswered, defaultNextSceneId, isPaused]);
+  
   
 
 
   const handleChoiceClick = (choice) => {
     if (choice.timecode_jump && videoRef.current) {
       videoRef.current.currentTime = timecodeToSeconds(choice.timecode_jump);
-      setShowQuestion(false); // pour cacher les boutons et la question après clic
-      setQuestionAlreadyAnswered(true); // pour indiquer que la question est répondue
+      setShowQuestion(false);
+      setQuestionAlreadyAnswered(true);
+      videoRef.current.play();  // Reprendre la lecture de la vidéo
+      setIsPaused(false);  // Mettre à jour l'état pour indiquer que la vidéo est en lecture
     }
   };
+  
 
   /// si timecode_fin_scene est atteint ET qu'il existe un timecode_jump_next_scene, alors on avance automatiquement vers timecode_jump_next_scene.
   /// utile surtout pour passer de historique de recherche à "chambre-fin"
