@@ -30,7 +30,7 @@ const videosData = [
             { label: "P", timecode_jump: "" } // pas besoin de next scene comme c'est deja a la suite
         ],
         //si QTE pas reussi :
-        fail_next_scene_timecode: "0:1:36:30" //chambre-apres-QTE-fenetre
+        fail_next_scene_timecode: "0:1:37:00" //chambre-apres-QTE-fenetre
     },
     {
         id: 'chambre-apres-QTE-fenetre',

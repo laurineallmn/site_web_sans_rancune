@@ -25,6 +25,12 @@ export default function Video() {
   const [showQuestion, setShowQuestion] = useState(false);
   const [questionAlreadyAnswered, setQuestionAlreadyAnswered] = useState(false);
 
+  const [showQTE, setShowQTE] = useState(false);
+  const [qteSucceeded, setQteSucceeded] = useState(false);
+  const [qteAlreadyFailed, setQteAlreadyFailed] = useState(false);
+
+
+
   /// por trouver la scène en cours depuis l'URL
   const currentSceneId = location.pathname.split('/').pop(); // ex: '/playing/chambre' => 'chambre'
   const scene = videosData.find(s => s.id === currentSceneId) || videosData[0]; // fallback (solution de secours si 1st solution ne marhce pas)
@@ -72,6 +78,10 @@ export default function Video() {
   const startDisplay = timecodeToSeconds(scene.timecode_display_question);
   const endDisplay = timecodeToSeconds(scene.timecode_remove_question);
   const defaultNextSceneId = scene.defaultNextSceneId;
+  const startQTE = timecodeToSeconds(scene.timecode_display_qte);
+const endQTE = timecodeToSeconds(scene.timecode_remove_qte);
+const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
+
 
   ///
   useEffect(() => {
@@ -125,7 +135,51 @@ export default function Video() {
     }, 500);
   
     return () => clearInterval(interval);
-  }, [scene]);
+  }, [scene])
+  
+  useEffect(() => {
+    setQteAlreadyFailed(false); // réinitialiser l'état à chaque changement de scène
+  }, [scene]);;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (videoRef.current) {
+        const current = videoRef.current.currentTime;
+  
+        if (!qteSucceeded && current >= startQTE && current <= endQTE) {
+          setShowQTE(true);
+        }
+  
+        if (!qteSucceeded && !qteAlreadyFailed && current > endQTE) {
+          setShowQTE(false); // on enlève le QTE visuellement
+          if (failTimecode) {
+            videoRef.current.currentTime = failTimecode; // QTE échoué, on saute au timecode d'échec
+            setQteAlreadyFailed(true); // <- IMPORTANT : on marque que l'échec est déjà traité
+          }
+        }
+      }
+    }, 200);
+  
+    return () => clearInterval(interval);
+  }, [startQTE, endQTE, qteSucceeded, failTimecode, qteAlreadyFailed]);
+  
+
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      const expectedKey = scene.keyboard.length > 0 ? scene.keyboard[0].label.toLowerCase() : null;
+      if (showQTE && expectedKey && event.key.toLowerCase() === expectedKey) {
+        setQteSucceeded(true);
+        setShowQTE(false); // on cache le QTE
+      }
+    };
+  
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [showQTE, scene]);
+  
+  
   
   return (
       <div className="video-container">
@@ -139,7 +193,12 @@ export default function Video() {
                 disablePictureInPicture
                 controlsList="nodownload noremoteplayback noplaybackrate nofullscreen"
             />
-
+ {/* ICI, TON AFFICHAGE QTE */}
+ {showQTE && (
+      <div className="qte-container">
+        <p>Appuyez sur "{scene.keyboard[0]?.label}" !</p>
+      </div>
+    )}
         {/* BOUTON MENU */}
         <div className="menu-container">
           <button className={`menu-button ${menuOpen ? 'open' : ''}`} onClick={toggleMenu}>
