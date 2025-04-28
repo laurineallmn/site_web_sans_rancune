@@ -254,99 +254,102 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
   
   
   return (
-      <div className="video-container">
-        <video
-                className="video-sans-rancune"
-                ref={videoRef} 
-                src="../../assets/video/montage_chambre_02.mp4"
-                autoPlay
-                loop
-                playsInline
-                disablePictureInPicture
-                controlsList="nodownload noremoteplayback noplaybackrate nofullscreen"
-            />
-            <audio ref={audioQTERef} src="../../assets/audio/QTE.mp3" preload="auto"></audio>
- {/* ICI, TON AFFICHAGE QTE */}
- {showQTE && (
-  <div className={`qte-container ${qteSucceeded ? 'qte-success' : qteAlreadyFailed ? 'qte-fail' : ''}`}>
-    <div className="qte-circle-wrapper">
-      <svg className="qte-circle" viewBox="0 0 100 100">
-        <circle className="qte-circle-bg" cx="50" cy="50" r="45" />
-        <circle
-          className="qte-circle-fg"
-          cx="50"
-          cy="50"
-          r="45"
-          style={{
-            strokeDasharray: 282, // 2 * PI * r (2 * 3.14 * 45)
-            strokeDashoffset: (282 * (100 - qteProgress)) / 100,
-          }}
-        />
-      </svg>
-      <div className="qte-text">{scene.keyboard[0]?.label.toUpperCase()}</div>
-    </div>
-  </div>
-)}
-
-
-
-
-        {/* BOUTON MENU */}
-        <div className="menu-container">
-          <button className={`menu-button ${menuOpen ? 'open' : ''}`} onClick={toggleMenu}>
-            <div className="bar1"></div>
-            <div className="bar2"></div>
-            <div className="bar3"></div>
-          </button>
-
-          {/* PETITS BOUTONS */}
-          {menuOpen && (
-            <div className="menu-items">
-              <button onClick={() => { saveVideoState(); goTo('/'); }}>Quitter</button>
-              <button onClick={() => { saveVideoState(); goTo('/notice'); }}>Notice</button>
-              
-              <button onClick={() => {
+    <div className="video-container">
+      <video
+        className="video-sans-rancune"
+        ref={videoRef}
+        src="../../assets/video/montage_chambre_02.mp4"
+        autoPlay
+        loop
+        playsInline
+        disablePictureInPicture
+        controlsList="nodownload noremoteplayback noplaybackrate nofullscreen"
+      />
+      
+      {/* Affichage de l'image de pause */}
+      {isPaused && pauseImage && (
+        <div className="pause-overlay">
+          <img src={pauseImage} alt="Pause" className="pause-image" />
+        </div>
+      )}
+  
+      <audio ref={audioQTERef} src="../../assets/audio/QTE.mp3" preload="auto"></audio>
+  
+      {/* Affichage de la QTE */}
+      {showQTE && (
+        <div className={`qte-container ${qteSucceeded ? 'qte-success' : qteAlreadyFailed ? 'qte-fail' : ''}`}>
+          <div className="qte-circle-wrapper">
+            <svg className="qte-circle" viewBox="0 0 100 100">
+              <circle className="qte-circle-bg" cx="50" cy="50" r="45" />
+              <circle
+                className="qte-circle-fg"
+                cx="50"
+                cy="50"
+                r="45"
+                style={{
+                  strokeDasharray: 282, // 2 * PI * r (2 * 3.14 * 45)
+                  strokeDashoffset: (282 * (100 - qteProgress)) / 100,
+                }}
+              />
+            </svg>
+            <div className="qte-text">{scene.keyboard[0]?.label.toUpperCase()}</div>
+          </div>
+        </div>
+      )}
+  
+      {/* BOUTON MENU */}
+      <div className="menu-container">
+        <button className={`menu-button ${menuOpen ? 'open' : ''}`} onClick={toggleMenu}>
+          <div className="bar1"></div>
+          <div className="bar2"></div>
+          <div className="bar3"></div>
+        </button>
+  
+        {/* PETITS BOUTONS */}
+        {menuOpen && (
+          <div className="menu-items">
+            <button onClick={() => { saveVideoState(); goTo('/'); }}>Quitter</button>
+            <button onClick={() => { saveVideoState(); goTo('/notice'); }}>Notice</button>
+  
+            <button onClick={() => {
               if (videoRef.current) {
                 videoRef.current.currentTime = 0; // remet la vidéo au début
               }
-              localStorage.removeItem('videoSavedTime');  //remet le timecode à zéro
+              localStorage.removeItem('videoSavedTime');  // remet le timecode à zéro
               navigate('/playing'); // on recharge la page de jeu
-              }}>Recommencer</button>
-
-             <button onClick={() => {
+            }}>Recommencer</button>
+  
+            <button onClick={() => {
               if (videoRef.current) {
                 videoRef.current.currentTime += 60;
               }
-              }}>Avancer 1 min</button>
-
-              <button onClick={() => {
-                if (videoRef.current) {
-                  videoRef.current.currentTime -= 30;
-                }
-              }}>Reculer 30 sec</button>
-              {/* <button onClick={() => { saveVideoState(); goTo('/playing-english-garder-current-timecode');}}>Changer de langue</button> */}
+            }}>Avancer 1 min</button>
+  
+            <button onClick={() => {
+              if (videoRef.current) {
+                videoRef.current.currentTime -= 30;
+              }
+            }}>Reculer 30 sec</button>
+          </div>
+        )}
+  
+        {/* /// AFFICHAGE QUESTION et PROPOSITION CHOIX */}
+        {showQuestion && (
+          <div className="question-proposition-container">
+            <h2>{scene.question}</h2>
+            <div className="choices">
+              {scene.choices.map((choice, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleChoiceClick(choice)}
+                >
+                  {choice.label}
+                </button>
+              ))}
             </div>
-          )}
-
-        
-            {/* /// AFFICHAGE QUESTION et PROPOSITION CHOIX*/}
-          {showQuestion && (
-            <div className="question-proposition-container">
-              <h2>{scene.question}</h2>
-              <div className="choices">
-                {scene.choices.map((choice, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleChoiceClick(choice)}
-                  >
-                    {choice.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-        </div>
+          </div>
+        )}
       </div>
+    </div>
   );
-}
+}  

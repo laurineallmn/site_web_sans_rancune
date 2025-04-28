@@ -211,12 +211,14 @@
     align-items: center;
     background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
     z-index: 10;
-  }
-  
-  .pause-image {
-    max-width: 80%;
-    max-height: 80%;
-  }
+}
+
+.pause-image {
+    width: 100%;  /* Prend 100% de la largeur de l'écran */
+    height: 100%; /* Prend 100% de la hauteur de l'écran */
+    object-fit: contain; /* Maintient les proportions de l'image sans déformation */
+}
+
   
 
 /* Container question + choix */
