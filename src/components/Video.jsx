@@ -31,6 +31,7 @@ export default function Video() {
   const [qteAlreadyFailed, setQteAlreadyFailed] = useState(false);
   const [qteProgress, setQteProgress] = useState(100); // en pourcentage
   const [isPaused, setIsPaused] = useState(false);
+  const [pauseImage, setPauseImage] = useState(''); // Image de pause à afficher
 
 
 
@@ -229,6 +230,27 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
   
     return () => clearInterval(interval);
   }, [showQTE, startQTE, endQTE]);
+
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === ' ') { // Quand on appuie sur la barre d'espace
+        if (isPaused) {
+          videoRef.current.play();
+          setIsPaused(false);
+          setPauseImage('');  // Supprimer l'image de pause
+        } else {
+          videoRef.current.pause();
+          setIsPaused(true);
+          setPauseImage('../../assets/photo/pause.JPG'); // Chemin de l'image de pause
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [isPaused]);
   
   
   return (
