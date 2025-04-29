@@ -332,24 +332,21 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
             }}>Reculer 30 sec</button>
           </div>
         )}
-  
-        {/* /// AFFICHAGE QUESTION et PROPOSITION CHOIX */}
-        {showQuestion && (
-          <div className="question-proposition-container">
-            <h2>{scene.question}</h2>
-            <div className="choices">
-              {scene.choices.map((choice, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleChoiceClick(choice)}
-                >
-                  {choice.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
+      {showQuestion && (
+  <div className="question-proposition-centered">
+    <div className="question-box">
+      <h2 className="question-text">{scene.question}</h2>
+      <div className="choices">
+        {scene.choices.map((choice, index) => (
+          <button key={index} onClick={() => handleChoiceClick(choice)}>
+            {choice.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 }  
