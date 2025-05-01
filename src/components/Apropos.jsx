@@ -22,7 +22,7 @@ export default function Apropos(){
                     <li>Acteurs : Jean LE CHAUDELEC, Vanessa BONNEAU, Laura GASQUEZ, Antoine LOUBEZ, Milo TURINES, Geoffray ODOT</li>
                     <li>Scénario : Théo BONNOT et Jean LE CHAUDELEC </li>
                     <li>Montage : Laurine ALLEMON, Théo BONNOT, Nolan BOURREL, Jean LE CHAUDELEC</li>
-                    <li>Maquillage : Sarah Bojeaux</li> {/* je sais plus comment ca s'ecrit sorryyy */}
+                    <li>Maquillage : Sarah Beaujaut</li>
                     {/* <li>Musique : </li> */}
                     {/* <li>Effets spéciaux : </li> */}
                     <li>Merci spécial à l'IMAC et Léon GOMEZ notre incroyable tuteur !</li>

@@ -9,10 +9,19 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding-right: 2rem;
+    /* padding-right: 2rem; */
+    padding: 1rem 0;
     width: 100%;
     box-sizing: border-box;
     background-color: #003049;
+}
+
+#navbar-droite {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 #navbar h1 {
@@ -23,10 +32,10 @@
 
 #navbar h3 {
     background-color: #669BBC;
+    margin: 0 1rem;
     padding: 0.5rem 2rem;
     color: #FDF0D5;
     border-radius: 1em;
-    font-family: 'Liquidity', 'Segoe UI', Tahoma, Verdana, sans-serif;
     overflow: hidden;
     box-shadow: black;
     text-decoration: none;
@@ -57,6 +66,13 @@
     #navbar {
         margin-top: 0rem;
         margin-bottom: 0rem;
+        flex-direction: column;
+    }
+    #navbar-droite {
+        flex-direction: column;
+    }
+    #navbar h3 {
+        margin: 0.5rem 0;
     }
 }
 
