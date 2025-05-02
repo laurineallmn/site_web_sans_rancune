@@ -2,9 +2,11 @@ html,
 body {
     height: 100%;
     margin: 0;
-    font-family: 'Helvetica', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* font-family: 'Helvetica', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+    font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 20px;
-    background-color: #780000;
+    background-color: #4B5D75;
+    background-image: url('/assets/fond_carrelage.jpg');
     color: #FDF0D5;
     /* background-color: #FDF0D5 */
 }
@@ -17,3 +19,7 @@ body {
     background: #8f0101;
     /* margin: 20px 0; */
 }
+
+a {
+    text-decoration: none;
+  }

@@ -1,19 +1,21 @@
-/* .app-container {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-} */
+.app-container {
+    font-family: 'Oswald', sans-serif;
+    background-color: #4B5D75; /* fond noir sobre */
+    color: #FDF0D5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
 
-/* TRAILER EN ARRIERE PLAN  */
 
+/* VIDÉO EN ARRIÈRE PLAN */
 .trailer-background-container {
     position: relative;
     width: 100%;
     height: 100vh;
-    /* height: calc(100vh - 100px); */
-    /* sensé ajuster si Header/Footer prennent de la place */
+    overflow: hidden;
 }
 
 .background-trailer {
@@ -24,13 +26,10 @@
     height: 100%;
     object-fit: cover;
     z-index: 0;
-    /* pour passer vraiment en fond */
     filter: brightness(60%);
 }
 
-
-/* BOUTON LANCER LA PARTIE */
-
+/* BOUTON DE DÉMARRAGE */
 .start-button {
     position: absolute;
     top: 50%;
@@ -38,38 +37,32 @@
     transform: translate(-50%, -50%);
     padding: 1rem 2rem;
     font-size: 1.5rem;
+    font-weight: bold;
     color: #FDF0D5;
     background-color: #8f0101;
     border: none;
     border-radius: 10px;
     cursor: pointer;
     z-index: 1;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .start-button:hover {
-    background-color: #669BBC;
+    background-color: #4B5D75;
+    background-image: url('/assets/fond_carrelage.jpg');
+    transform: translate(-50%, -50%) scale(1.05);
 }
 
+/* FONDU DE SORTIE */
 .fade-out {
     animation: fadeOut 1s forwards;
 }
 
-
-/* @keyframes fadeOut {
+@keyframes fadeOut {
     from {
         opacity: 1;
     }
     to {
-        opacity: 0;
-    }
-} */
-
-@keyframes fadeOut {
-    0% {
-        opacity: 1;
-    }
-    100% {
         opacity: 0;
     }
 }

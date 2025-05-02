@@ -1,33 +1,51 @@
-html,
-body {
-    height: 100%;
-    margin: 0;
-}
-
 #footer-container {
-    margin-top: 3rem;
+    background-color: #000000;
+    background-image: url('/assets/fond_carrelage2.jpg');
+    color: #FDF0D5;
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
-    /* background-color: white; */
-    background-color: #003049;
+    padding: 1rem 2rem;
+    border-top: 2px solid #8f0101;
+    font-size: 0.9rem;
 }
 
-#footer-left-container {
-    margin: 1vw;
+#footer-left-container,
+#footer-right-container {
+    margin: 0.5rem 1rem;
 }
 
+/* TITRE GAUCHE */
 #footer-left-container h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    color: #FDF0D5;
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.2rem;
     text-decoration: none;
-    color: #669BBC;
+    transition: color 0.3s;
 }
 
 #footer-left-container h3:hover {
-    color: white;
+    color: #FDF0D5;
+    cursor: pointer;
 }
 
-#footer-right-container {
-    margin: 1vw;
+/* COPYRIGHT */
+#footer-left-container p {
+    margin: 0.2rem 0 0;
+    color: #ccc;
+}
+
+/* LIENS LÉGAUX */
+#footer-right-container p {
+    margin: 0.2rem 0;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+#footer-right-container p:hover {
+    color: #FDF0D5;
 }

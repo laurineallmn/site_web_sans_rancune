@@ -3,6 +3,65 @@ import { useNavigate, useLocation} from 'react-router-dom';
 import videosData from '../../assets/data/videosData.js';
 import './Video.css';
 
+
+const roomsData = [
+  { name: "Salon", visited: false },
+  { name: "Sous-sol", visited: false },
+  { name: "Chambre", visited: false },
+  { name: "SDB", visited: false }
+];
+
+const suspectsData = [
+  { 
+    name: "Sarah",
+    questions: [
+      { text: "Que te souviens-tu de la soirée ?", asked: false },
+      { text: "Comment as-tu découvert le corps ?", asked: false },
+      { text: "Étais-tu proche de Maëlys ?", asked: false },
+      { text: "As-tu remarqué d'autres comportements étranges ?", asked: false },
+      { text: "Qu'as-tu fait par la suite ?", asked: false },
+      { text: "Qui d'autre savait pour le harcèlement d'Amélie ?", asked: false }
+    ]
+  },
+
+  { 
+    name: "Mathieu",
+    questions: [
+      { text: "Pourquoi avoir fait venir Maëlys à la soirée ?", asked: false },
+      { text: "Pourquoi avez-vous un oeil au beurre noir ?", asked: false },
+      { text: "De quoi vous souvenez-vous de la soirée ?", asked: false },
+      { text: "Confronter Mathieu à la réalité", asked: false },
+      { text: "L'accuser de mentir", asked: false },
+      { text: "Quelles sont les dernières infos dont il se souvient", asked: false }
+    ]
+  },
+
+  { 
+    name: "Louis",
+    questions: [
+      { text: "Pourquoi avoir quitté la soirée ?", asked: false },
+      { text: "Pourquoi être revenu à 1h du matin ?", asked: false },
+      { text: "Quels sont vos liens avec les suspects ?", asked: false },
+      { text: "Qu'avez-vous fait après avoir quitté la soirée ?", asked: false },
+      { text: "L'accuser de mentir", asked: false },
+      { text: "Lui montrer les comprimés", asked: false }
+    ]
+  },
+
+  { 
+    name: "Arthur",
+    questions: [
+      { text: "Peux-tu me parler de tes relations avec les autres suspects ?", asked: false },
+      { text: "Raconte-moi ta version des faits", asked: false },
+      { text: "Puis-je regarder ton téléphone ?", asked: false },
+      { text: "Pourquoi t'es-tu disputé avec Maëlys ?", asked: false },
+      { text: "As-tu eu des nouvelles de Maëlys ?", asked: false },
+      { text: "Puis-je fouiller ta voiture ?", asked: false }
+    ]
+  }
+];
+
+
 // => indique code fait pour : les boutons de menu et la memorisation du timecode en cours
 /// => indique code fait pour : affichage des bouton de choix et QTE etc avec VideoData.js  /
 

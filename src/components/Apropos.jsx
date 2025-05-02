@@ -11,7 +11,7 @@ export default function Apropos(){
                 <p>
                     <i>Sans Rancune</i> est un court-métrage interactif policier en vue à la première personne.  
                     <br /><br />
-                    Réalisé dans le cadre d’un projet étudiant à l’<a href="https://www.ingenieur-imac.fr/" target="_blank" rel="noopener noreferrer"><b>IMAC</b></a>, une formation unique mêlant ingénierie, arts et communication visuelle.  
+                    Réalisé dans le cadre d’un projet étudiant à l’<a href="https://www.ingenieur-imac.fr/" target="_blank" rel="noopener noreferrer" color="#4B5D75"><b>IMAC</b></a>, une formation unique mêlant ingénierie, arts et communication visuelle.  
                     <br /><br />
                     Dans cette expérience, tu incarnes un jeune commissaire chargé d’élucider une mystérieuse affaire de meurtre. Tes choix détermineront la suite… et ta réussite !
                 </p>

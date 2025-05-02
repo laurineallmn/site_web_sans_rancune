@@ -1,13 +1,15 @@
 #a-propos {
-    margin: 0rem 2rem;
+    margin: 10rem 2rem;
+    background-color: 4B5D75;
 }
 
 span {
-    color: #C1121F;
+    color: #4B5D75;
 }
 
 #a-propos a {
     text-decoration: none;
+    color: #8f0101;
 }
 
 #a-propos h2 {
