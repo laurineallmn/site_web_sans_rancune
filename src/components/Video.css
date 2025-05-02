@@ -72,6 +72,7 @@
 }
 
 .menu-items button {
+    font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #FDF0D5;
     color: black;
     border: none;
@@ -83,7 +84,8 @@
 }
 
 .menu-items button:hover {
-    background-color: #f0e0c0;
+    background-color: #8f0101;
+    color: #f0e0c0;
 }
 
 /* QTE CONTAINER */

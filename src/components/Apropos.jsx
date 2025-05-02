@@ -11,7 +11,7 @@ export default function Apropos(){
                 <p>
                     <i>Sans Rancune</i> est un court-métrage interactif policier en vue à la première personne.  
                     <br /><br />
-                    Réalisé dans le cadre d’un projet étudiant à l’<a href="https://www.ingenieur-imac.fr/" target="_blank" rel="noopener noreferrer"><b>IMAC</b></a>, une formation unique mêlant ingénierie, arts et communication visuelle.  
+                    Réalisé dans le cadre d’un projet étudiant à l’<a href="https://www.ingenieur-imac.fr/" target="_blank" rel="noopener noreferrer" color="#4B5D75"><b>IMAC</b></a>, une formation unique mêlant ingénierie, arts et communication visuelle.  
                     <br /><br />
                     Dans cette expérience, tu incarnes un jeune commissaire chargé d’élucider une mystérieuse affaire de meurtre. Tes choix détermineront la suite… et ta réussite !
                 </p>
@@ -32,6 +32,27 @@ export default function Apropos(){
                     Merci à toutes celles et ceux qui ont contribué à rendre cette aventure possible. Et merci à vous de nous soutenir ❤️
                 </p>
             </div>
+            <section className="notre-equipe">
+    <h4>Notre équipe</h4>
+    <div className="equipe-grid">
+    <div className="membre">
+            <img src="/assets/laurine.jpg" alt="Laurine Allemon" />
+            <p>Laurine ALLEMON<br /><span> Cheffe Opératrice & Monteuse</span></p>
+        </div>
+        <div className="membre">
+            <img src="/assets/théo.jpg" alt="Théo Bonnot" />
+            <p>Théo BONNOT<br /><span>Réalisateur & Scénariste</span></p>
+        </div>
+        <div className="membre">
+            <img src="/assets/nolan.jpg" alt="Nolan Bourrel" />
+            <p>Nolan BOURREL<br /><span>Réalisateur & Ingénieur du son</span></p>
+        </div>
+        <div className="membre">
+            <img src="/assets/jean.jpg" alt="Jean Le Chaudelec" />
+            <p>Jean LE CHAUDELEC<br /><span>Scénariste & Acteur</span></p>
+        </div>
+    </div>
+</section>
             <Footer/>
         </div>
     );
