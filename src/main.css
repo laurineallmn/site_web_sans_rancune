@@ -4,6 +4,7 @@ body {
     margin: 0;
     font-family: 'Helvetica', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 16px;
+    background-image: url('/assets/fond_carrelage.jpg');
     background-color: #780000;
     color: #FDF0D5;
     /* background-color: #FDF0D5 */
