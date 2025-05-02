@@ -21,7 +21,7 @@ const videosData = [
         choices: [
             //uniquement si QTE reussi
             { label: "L'historique des recherches", timecode_jump: "0:02:23:30" },
-            { label: "Les caméra de surveillance", timecode_jump: "0:02:47:40" },
+            { label: "Les caméras de surveillance", timecode_jump: "0:02:47:40" },
         ],
         default_answer: "Les caméras de surveillance", //pas utilie au final je pense
         default_timecode_jump: "0:02:47:40",
