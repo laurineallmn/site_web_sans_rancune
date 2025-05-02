@@ -9,9 +9,18 @@
 }
 
 
+/* .app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+} */
+
+
+/* TRAILER EN ARRIERE PLAN  */
 
 /* VIDÉO EN ARRIÈRE PLAN */
 .trailer-background-container {
+    /* flex: 1; */
     position: relative;
     width: 100%;
     height: 100vh;

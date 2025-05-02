@@ -4,7 +4,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    /* padding-right: 2rem; */
+    padding: 1rem 0;
     width: 100%;
     background-color: #4B5D75;
     background-image: url('/assets/fond_carrelage.jpg');
@@ -14,10 +15,40 @@
     z-index: 1000;
 }
 
+#navbar-droite {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
 #navbar h1 {
     font-family: 'Oswald', sans-serif;
     font-size: 2rem;
     letter-spacing: 0.2rem;
+    margin: 0 2rem;
+    color: #669BBC;
+    text-decoration: none;
+}
+
+#navbar h3 {
+    background-color: #669BBC;
+    margin: 0 1rem;
+    padding: 0.5rem 2rem;
+    color: #FDF0D5;
+    border-radius: 1em;
+    overflow: hidden;
+    box-shadow: black;
+    text-decoration: none;
+}
+
+#navbar #jouer-button {
+    background-color: #C1121F;
+}
+
+#navbar #jouer-button:hover {
+    background-color: #669BBC;
     color: #FDF0D5;
     margin: 0;
     text-transform: uppercase;
@@ -78,7 +109,16 @@ transition: background-color 0.3s ease;
 
     #navbar h3 {
         margin: 0.3rem 0;
+        margin-top: 0rem;
+        margin-bottom: 0rem;
+        flex-direction: column;
     }
+    #navbar-droite {
+        flex-direction: column;
+    }
+    /* #navbar h3 {
+        margin: 0.5rem 0;
+    } */
 }
 
 @media (max-width: 480px) {
