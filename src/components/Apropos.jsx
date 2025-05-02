@@ -53,6 +53,22 @@ export default function Apropos(){
         </div>
     </div>
 </section>
+<div className="tournage-section">
+  <h4>Photos du tournage</h4>
+  <div className="carousel-container">
+    <div className="carousel">
+      {[...Array(9)].map((_, index) => (
+        <img
+          key={index}
+          src={`../../assets/carrousel/photo${index + 1}.jpg`} // adapte le chemin selon ton arborescence
+          alt={`Tournage ${index + 1}`}
+          className="carousel-image"
+        />
+      ))}
+    </div>
+  </div>
+</div>
+
             <Footer/>
         </div>
     );

@@ -66,3 +66,47 @@ span {
     font-size: 0.85rem;
     color: #CFCFCF;
 }
+
+.tournage-section {
+    margin-top: 4rem;
+    text-align: center;
+    color: #FDF0D5;
+}
+
+.tournage-section h4 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #669BBC;
+}
+
+.carousel-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 1rem;
+    scrollbar-width: none; /* Firefox */
+}
+
+.carousel-container::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+.carousel {
+    display: flex;
+    gap: 1rem;
+}
+
+.carousel-image {
+    width: 250px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+    border: 2px solid #333;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+}
+
+.carousel-image:hover {
+    transform: scale(1.05);
+}
+
