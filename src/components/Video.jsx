@@ -57,6 +57,36 @@ const suspectsData = [
   }
 ];
 
+// Convertir timecode du type "0:02:13:00" en sec
+const timecodeToSeconds = (tc) => {
+  if (!tc) return 0;
+  const parts = tc.split(':').map(p => parseInt(p, 10));
+  const [h, m, s] = parts;
+  return (h * 3600) + (m * 60) + s;
+};
+
+// Analyser les choix et créer une carte des sections de temps à sauter
+const buildSkipSections = (scene, selectedChoice) => {
+  if (!scene || !scene.choices || selectedChoice === null) return [];
+  
+  // Construire les plages à sauter
+  const sectionsToSkip = [];
+  
+  scene.choices.forEach((choice, index) => {
+    if (index !== selectedChoice && choice.timecode_jump && choice.timecode_fin) {
+      const startTime = timecodeToSeconds(choice.timecode_jump);
+      const endTime = timecodeToSeconds(choice.timecode_fin);
+      
+      // Vérifier si les deux timecodes sont valides avant d'ajouter à la liste
+      if (startTime >= 0 && endTime > startTime) {
+        sectionsToSkip.push({ start: startTime, end: endTime });
+      }
+    }
+  });
+  
+  return sectionsToSkip;
+};
+
 export default function Video() {
   // Références
   const videoRef = useRef(null);
@@ -79,6 +109,9 @@ export default function Video() {
   const [pauseImage, setPauseImage] = useState('');
   const [volume, setVolume] = useState(0.5); // Volume par défaut à 50%
   const [showVolumeControl, setShowVolumeControl] = useState(false);
+  const [selectedChoice, setSelectedChoice] = useState(null); // Pour suivre le choix sélectionné
+  const [skipSections, setSkipSections] = useState([]); // Sections à sauter
+  const [isSkipping, setIsSkipping] = useState(false); // Pour éviter de faire plusieurs sauts en même temps
 
   // Trouver la scène en cours depuis l'URL
   const currentSceneId = location.pathname.split('/').pop();
@@ -103,7 +136,13 @@ export default function Video() {
       
       videoRef.current.play();
     }
-  }, []);
+    
+    // Réinitialiser le choix sélectionné à chaque changement de scène
+    setSelectedChoice(null);
+    setQuestionAlreadyAnswered(false);
+    setSkipSections([]);
+    setIsSkipping(false);
+  }, [currentSceneId]);
 
   // Sauvegarder dans l'état ET dans localStorage
   const saveVideoState = () => {
@@ -139,14 +178,6 @@ export default function Video() {
   const goTo = (path) => {
     saveVideoState();
     navigate(path);
-  };
-
-  // Convertir timecode du type "0:02:13:00" en sec
-  const timecodeToSeconds = (tc) => {
-    if (!tc) return 0;
-    const parts = tc.split(':').map(p => parseInt(p, 10));
-    const [h, m, s] = parts;
-    return (h * 3600) + (m * 60) + s;
   };
 
   // Timecodes importants
@@ -185,15 +216,66 @@ export default function Video() {
   }, [startDisplay, endDisplay, questionAlreadyAnswered, defaultNextSceneId, isPaused]);
   
   // Gérer les choix
-  const handleChoiceClick = (choice) => {
+  const handleChoiceClick = (choice, index) => {
     if (choice.timecode_jump && videoRef.current) {
+      // Créer les sections à sauter basées sur ce choix
+      const newSkipSections = buildSkipSections(scene, index);
+      
+      setSkipSections(newSkipSections);
+      console.log(`Choix ${index} sélectionné. Sections à sauter:`, newSkipSections);
+      
+      // Naviguer vers le timecode du choix
       videoRef.current.currentTime = timecodeToSeconds(choice.timecode_jump);
       setShowQuestion(false);
       setQuestionAlreadyAnswered(true);
+      setSelectedChoice(index); // Enregistrer l'index du choix sélectionné
       videoRef.current.play();
       setIsPaused(false);
     }
   };
+  
+  // Surveiller le temps et sauter les sections non choisies
+  useEffect(() => {
+    if (skipSections.length === 0 || !videoRef.current) {
+      return; // Ne rien faire s'il n'y a pas de sections à sauter
+    }
+
+    const checkTimeAndSkip = () => {
+      if (isSkipping || !videoRef.current) return;
+      
+      const currentTime = videoRef.current.currentTime;
+      
+      // Vérifier si nous sommes entrés dans une section à sauter
+      for (const section of skipSections) {
+        if (currentTime >= section.start && currentTime < section.end) {
+          console.log(`Saut automatique: de ${currentTime}s à ${section.end}s`);
+          setIsSkipping(true);
+          videoRef.current.currentTime = section.end;
+          
+          // Réinitialiser le flag de saut après un court délai
+          setTimeout(() => {
+            setIsSkipping(false);
+          }, 200);
+          
+          break; // Sortir de la boucle après avoir effectué un saut
+        }
+      }
+    };
+
+    // Vérifier périodiquement
+    const interval = setInterval(checkTimeAndSkip, 100);
+    
+    // Écouter également l'événement timeupdate pour une réaction plus rapide
+    const handleTimeUpdate = () => checkTimeAndSkip();
+    videoRef.current.addEventListener('timeupdate', handleTimeUpdate);
+    
+    return () => {
+      clearInterval(interval);
+      if (videoRef.current) {
+        videoRef.current.removeEventListener('timeupdate', handleTimeUpdate);
+      }
+    };
+  }, [skipSections, isSkipping]);
   
   // Gérer la fin de scène
   useEffect(() => {
@@ -472,7 +554,7 @@ export default function Video() {
             <h2 className="question-text">{scene.question}</h2>
             <div className="choices">
               {scene.choices.map((choice, index) => (
-                <button key={index} onClick={() => handleChoiceClick(choice)}>
+                <button key={index} onClick={() => handleChoiceClick(choice, index)}>
                   {choice.label}
                 </button>
               ))}

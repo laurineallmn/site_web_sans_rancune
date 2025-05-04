@@ -4,15 +4,18 @@
 
 
 // export default videosData = [
+// Structure de données pour film interactif
+// Chaque scène contient des informations sur les timecodes et les choix
+
 const videosData = [
-    //////////: BUREAU ////////////
+    //////////: CHAMBRE ////////////
     {
         id: 'chambre',
         description: "Scène de la chambre",
         timecode: '0:0:0:0', // 0 min
         timecode_fin_scene: "",
         timecode_jump_next_scene: "", //les questions me feront directement aller sur la nextscene
-        timecode_display_question: '0:02:13:00', //display suelement si QTE reussi
+        timecode_display_question: '0:02:13:00', //display seulement si QTE reussi
         timecode_remove_question: '0:02:19:00',
         timecode_display_qte: '0:1:17:0',
         timecode_remove_qte: '0:1:18:0',
@@ -20,10 +23,19 @@ const videosData = [
         question: 'Que souhaitez-vous visionner ?',
         choices: [
             //uniquement si QTE reussi
-            { label: "L'historique des recherches", timecode_jump: "0:02:23:30" },
-            { label: "Les caméras de surveillance", timecode_jump: "0:02:47:40" },
+            { 
+                label: "L'historique des recherches", 
+                timecode_jump: "0:02:23:30",
+                timecode_fin: "0:02:41:00"  // Fin de cette option
+            },
+            { 
+                label: "Les caméras de surveillance", 
+                timecode_jump: "0:02:47:40",
+                timecode_fin: "0:04:43:00"  // Fin de cette option
+            },
         ],
         default_answer: "Les caméras de surveillance", //pas utilie au final je pense
+        defaultNextSceneId: "chambre-camera-surveillance",
         default_timecode_jump: "0:02:47:40",
         keyboard: [
             //si QTE reussi
@@ -46,11 +58,20 @@ const videosData = [
         //peut etre rajouter localisation des quesitons sur la page 
         question: 'Que souhaitez-vous visionner ?',
         choices: [
-            { label: "L'historique des recherches", timecode_jump: "0:02:23:30" },
-            { label: "Les caméras de surveillance", timecode_jump: "0:02:47:40" },
+            { 
+                label: "L'historique des recherches", 
+                timecode_jump: "0:02:23:30",
+                timecode_fin: "0:02:41:00"  // Fin de cette option
+            },
+            { 
+                label: "Les caméras de surveillance", 
+                timecode_jump: "0:02:47:40",
+                timecode_fin: "0:04:43:00"  // Fin de cette option
+            },
         ],
         //si aucun clique sur la question : 
         default_answer: "Les caméras de surveillance", //pas utilie au final je pense
+        defaultNextSceneId: "chambre-camera-surveillance",
         default_timecode_jump: "0:02:47:40",
         //peut etre rajouter localisation du QTE 
         keyboard: [],
@@ -109,10 +130,26 @@ const videosData = [
         question: 'Vous avez fini d investiguer cette pièce où voulez-vous aller ?',
         //les choix que peut faire l'utilisateur
         choices: [
-            { label: "Bureau", timecode_jump: "?" },
-            { label: "Sous-sol", timecode_jump: "?" },
-            { label: "Salle-de-bain", timecode_jump: "?" },
-            { label: "Commissariat", timecode_jump: "?" }
+            { 
+                label: "Bureau", 
+                timecode_jump: "?",
+                timecode_fin: "?" // À remplir selon vos timecodes réels
+            },
+            { 
+                label: "Sous-sol", 
+                timecode_jump: "?",
+                timecode_fin: "?" // À remplir selon vos timecodes réels
+            },
+            { 
+                label: "Salle-de-bain", 
+                timecode_jump: "?",
+                timecode_fin: "?" // À remplir selon vos timecodes réels
+            },
+            { 
+                label: "Commissariat", 
+                timecode_jump: "?",
+                timecode_fin: "?" // À remplir selon vos timecodes réels
+            }
         ],
         default_answer: "Commissariat",
         default_timecode_jump: "?",
