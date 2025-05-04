@@ -1,62 +1,94 @@
-
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; //pour rediriger via le code directement (on peut pas utiliser LINK) (LINK est pas fait pour changer de page mais pour lier un element a une page grace au clique)
+import { useNavigate } from 'react-router-dom';
 import './App.css';
-import Video from './Video.jsx'
 import Header from './Header.jsx'
 import Footer from './Footer.jsx'
 
-
 export default function App() {
-  // const [buttonPlayClicked, setButtonPlayClicked] = useState(false);
   const [isFading, setIsFading] = useState(false);
-  //verifier si Sans Rancune a été lancé 
   const [hasStarted, setHasStarted] = useState(false);
+  const [volume, setVolume] = useState(0.5); // Valeur par défaut du volume à 50%
+  const [videoRef, setVideoRef] = useState(null);
 
-  //permettra d'aller vers la page video plus bas dans le code
   const navigate = useNavigate();
 
-// on lit le localStorage AU CHARGEMENT de App.jsx pour voir si hasstarted est true ou false
+  // Lire le localStorage AU CHARGEMENT de App.jsx pour voir si hasstarted est true ou false
   useEffect(() => {
     const started = localStorage.getItem('hasStarted');
     if (started === 'true') {
       setHasStarted(true);
     }
+    
+    // Récupérer le volume sauvegardé si disponible
+    const savedVolume = localStorage.getItem('videoVolume');
+    if (savedVolume) {
+      setVolume(parseFloat(savedVolume));
+    }
   }, []); 
 
+  // Effet pour appliquer le volume à la vidéo quand videoRef ou volume change
+  useEffect(() => {
+    if (videoRef) {
+      videoRef.volume = volume;
+    }
+  }, [videoRef, volume]);
+
   const handleStart = () => {
-    localStorage.setItem('hasStarted', 'true'); //au clic du bouton 'lancer la partie" on dit que ca a commencé
-    setHasStarted(true); //on met a jour l'etat local de react
+    localStorage.setItem('hasStarted', 'true');
+    setHasStarted(true);
     setIsFading(true);
     setTimeout(() => {
       navigate('/playing');
-    }, 1000); // attend la fin du fade pour lancer le jeu
+    }, 1000);
+  };
+
+  const handleVolumeChange = (e) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    localStorage.setItem('videoVolume', newVolume);
+    
+    if (videoRef) {
+      videoRef.volume = newVolume;
+    }
   };
 
   return (
     <div className="app-container">
       <Header />
 
-      {/* {!buttonPlayClicked && ( */}
-        <div className={`trailer-background-container ${isFading ? 'fade-out' : ''}`}>
-          <video
-              className="background-trailer"
-              src="../../assets/video/bande_annonce.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              disablePictureInPicture
-              controlsList="nodownload noremoteplayback noplaybackrate nofullscreen"
-          />
+      <div className={`trailer-background-container ${isFading ? 'fade-out' : ''}`}>
+        <video
+          className="background-trailer"
+          src="../../assets/video/bande_annonce.mp4"
+          ref={(el) => setVideoRef(el)}
+          autoPlay
+          loop
+          playsInline
+          disablePictureInPicture
+          controlsList="nodownload noremoteplayback noplaybackrate nofullscreen"
+        />
+        
+        <div className="controls-container">
           <button className="start-button" onClick={handleStart}>
             {hasStarted ? 'CONTINUER LA PARTIE' : 'LANCER LA PARTIE'}
           </button>
+          
+          <div className="volume-control">
+            <label htmlFor="volume">Volume:</label>
+            <input 
+              type="range" 
+              id="volume" 
+              min="0" 
+              max="1" 
+              step="0.1" 
+              value={volume}
+              onChange={handleVolumeChange}
+            />
+          </div>
         </div>
+      </div>
      
       <Footer />
     </div>
   );
 }
-
-

@@ -3,7 +3,6 @@ import { useNavigate, useLocation} from 'react-router-dom';
 import videosData from '../../assets/data/videosData.js';
 import './Video.css';
 
-
 const roomsData = [
   { name: "Salon", visited: false },
   { name: "Sous-sol", visited: false },
@@ -23,7 +22,6 @@ const suspectsData = [
       { text: "Qui d'autre savait pour le harcèlement d'Amélie ?", asked: false }
     ]
   },
-
   { 
     name: "Mathieu",
     questions: [
@@ -35,7 +33,6 @@ const suspectsData = [
       { text: "Quelles sont les dernières infos dont il se souvient", asked: false }
     ]
   },
-
   { 
     name: "Louis",
     questions: [
@@ -47,7 +44,6 @@ const suspectsData = [
       { text: "Lui montrer les comprimés", asked: false }
     ]
   },
-
   { 
     name: "Arthur",
     questions: [
@@ -61,94 +57,107 @@ const suspectsData = [
   }
 ];
 
-
-// => indique code fait pour : les boutons de menu et la memorisation du timecode en cours
-/// => indique code fait pour : affichage des bouton de choix et QTE etc avec VideoData.js  /
-
-
 export default function Video() {
-
-  //pour se souvenir du timecode où la personne était (sil change de page)
+  // Références
   const videoRef = useRef(null);
   const audioQTERef = useRef(null);
-  //permettra d'aller vers une autre page plus bas dans le code
+  
+  // Navigation et location
   const navigate = useNavigate();
-  ///pour savoir dans quel url est l'user
   const location = useLocation(); 
 
-
-
+  // États
   const [savedTime, setSavedTime] = useState(0);
-  //pour le bouton menu en haut a droite
   const [menuOpen, setMenuOpen] = useState(false);
-  ///
   const [showQuestion, setShowQuestion] = useState(false);
   const [questionAlreadyAnswered, setQuestionAlreadyAnswered] = useState(false);
-
   const [showQTE, setShowQTE] = useState(false);
   const [qteSucceeded, setQteSucceeded] = useState(false);
   const [qteAlreadyFailed, setQteAlreadyFailed] = useState(false);
-  const [qteProgress, setQteProgress] = useState(100); // en pourcentage
+  const [qteProgress, setQteProgress] = useState(100);
   const [isPaused, setIsPaused] = useState(false);
-  const [pauseImage, setPauseImage] = useState(''); // Image de pause à afficher
+  const [pauseImage, setPauseImage] = useState('');
+  const [volume, setVolume] = useState(0.5); // Volume par défaut à 50%
+  const [showVolumeControl, setShowVolumeControl] = useState(false);
 
+  // Trouver la scène en cours depuis l'URL
+  const currentSceneId = location.pathname.split('/').pop();
+  const scene = videosData.find(s => s.id === currentSceneId) || videosData[0];
 
-
-
-
-  /// por trouver la scène en cours depuis l'URL
-  const currentSceneId = location.pathname.split('/').pop(); // ex: '/playing/chambre' => 'chambre'
-  const scene = videosData.find(s => s.id === currentSceneId) || videosData[0]; // fallback (solution de secours si 1st solution ne marhce pas)
-
-
-  // pour charger le timecode depuis localStorage quand la page charge
+  // Charger le timecode et le volume depuis localStorage au chargement
   useEffect(() => {
     const storedTime = localStorage.getItem('videoSavedTime');
-    if (storedTime && videoRef.current) {
-      videoRef.current.currentTime = parseFloat(storedTime);
+    const storedVolume = localStorage.getItem('videoVolume');
+    
+    if (videoRef.current) {
+      if (storedTime) {
+        videoRef.current.currentTime = parseFloat(storedTime);
+      }
+      
+      if (storedVolume) {
+        setVolume(parseFloat(storedVolume));
+        videoRef.current.volume = parseFloat(storedVolume);
+      } else {
+        videoRef.current.volume = volume;
+      }
+      
       videoRef.current.play();
     }
   }, []);
 
-   // pour sauvegarder dans l'état ET dans localStorage
-   const saveVideoState = () => {
+  // Sauvegarder dans l'état ET dans localStorage
+  const saveVideoState = () => {
     if (videoRef.current) {
       const current = videoRef.current.currentTime;
       setSavedTime(current);
-      localStorage.setItem('videoSavedTime', current); // <-- STOCKAGE
+      localStorage.setItem('videoSavedTime', current);
     }
   };
 
-  //pour le bouton menu en haut a droite
+  // Toggle menu
   const toggleMenu = () => {
     setMenuOpen(prev => !prev);
   };
 
-  //pour les onglet du bouton menu et la redirection vers d'autre pages
+  // Toggle contrôle du volume
+  const toggleVolumeControl = () => {
+    setShowVolumeControl(prev => !prev);
+  };
+
+  // Changer le volume
+  const handleVolumeChange = (e) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    localStorage.setItem('videoVolume', newVolume);
+    
+    if (videoRef.current) {
+      videoRef.current.volume = newVolume;
+    }
+  };
+
+  // Navigation
   const goTo = (path) => {
     saveVideoState();
     navigate(path);
   };
 
-
-   /// convertir timecode du type "0:02:13:00" en sec
-   const timecodeToSeconds = (tc) => {
+  // Convertir timecode du type "0:02:13:00" en sec
+  const timecodeToSeconds = (tc) => {
     if (!tc) return 0;
     const parts = tc.split(':').map(p => parseInt(p, 10));
     const [h, m, s] = parts;
     return (h * 3600) + (m * 60) + s;
   };
 
-  ///
+  // Timecodes importants
   const startDisplay = timecodeToSeconds(scene.timecode_display_question);
   const endDisplay = timecodeToSeconds(scene.timecode_remove_question);
   const defaultNextSceneId = scene.defaultNextSceneId;
   const startQTE = timecodeToSeconds(scene.timecode_display_qte);
-const endQTE = timecodeToSeconds(scene.timecode_remove_qte);
-const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
+  const endQTE = timecodeToSeconds(scene.timecode_remove_qte);
+  const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
 
-
-  ///
+  // Gestion des questions
   useEffect(() => {
     const interval = setInterval(() => {
       if (videoRef.current) {
@@ -157,8 +166,8 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
         if (!questionAlreadyAnswered && current >= startDisplay && current <= endDisplay) {
           setShowQuestion(true);
           if (!isPaused) {
-            videoRef.current.pause();  // Mettre en pause la vidéo
-            setIsPaused(true);  // Mettre à jour l'état pour indiquer que la vidéo est en pause
+            videoRef.current.pause();
+            setIsPaused(true);
           }
         }
   
@@ -175,22 +184,18 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
     return () => clearInterval(interval);
   }, [startDisplay, endDisplay, questionAlreadyAnswered, defaultNextSceneId, isPaused]);
   
-  
-
-
+  // Gérer les choix
   const handleChoiceClick = (choice) => {
     if (choice.timecode_jump && videoRef.current) {
       videoRef.current.currentTime = timecodeToSeconds(choice.timecode_jump);
       setShowQuestion(false);
       setQuestionAlreadyAnswered(true);
-      videoRef.current.play();  // Reprendre la lecture de la vidéo
-      setIsPaused(false);  // Mettre à jour l'état pour indiquer que la vidéo est en lecture
+      videoRef.current.play();
+      setIsPaused(false);
     }
   };
   
-
-  /// si timecode_fin_scene est atteint ET qu'il existe un timecode_jump_next_scene, alors on avance automatiquement vers timecode_jump_next_scene.
-  /// utile surtout pour passer de historique de recherche à "chambre-fin"
+  // Gérer la fin de scène
   useEffect(() => {
     const interval = setInterval(() => {
       if (videoRef.current) {
@@ -201,25 +206,27 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
         if (finScene && jumpNext && current >= finScene) {
           const nextScene = videosData.find(scene => timecodeToSeconds(scene.timecode) === jumpNext);
           if (nextScene) {
-              goTo(`/playing/${nextScene.id}`); //on change pas suelement le timecode mais aussi l'url pour que ca affiche les bonne questions
+              goTo(`/playing/${nextScene.id}`);
           }
-      }
+        }
       }
     }, 500);
   
     return () => clearInterval(interval);
-  }, [scene])
+  }, [scene]);
   
+  // Réinitialiser QTE à chaque changement de scène
   useEffect(() => {
-    setQteAlreadyFailed(false); // réinitialiser l'état à chaque changement de scène
+    setQteAlreadyFailed(false);
   }, [scene]);
 
+  // Gestion des QTE
   useEffect(() => {
     const interval = setInterval(() => {
       if (videoRef.current) {
         const current = videoRef.current.currentTime;
   
-        // Jouer le son QTE 1 seconde avant l'affichage du QTE
+        // Jouer le son QTE avant l'affichage
         if (!qteSucceeded && !qteAlreadyFailed && 
             current >= (startQTE - 0.35) && current < startQTE) {
           if (audioQTERef.current) {
@@ -247,17 +254,16 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
     return () => clearInterval(interval);
   }, [startQTE, endQTE, qteSucceeded, failTimecode, qteAlreadyFailed]);
   
-  
-
+  // Gestion des touches pour QTE
   useEffect(() => {
     const handleKeyPress = (event) => {
-      const expectedKey = scene.keyboard.length > 0 ? scene.keyboard[0].label.toLowerCase() : null;
+      const expectedKey = scene.keyboard?.length > 0 ? scene.keyboard[0].label.toLowerCase() : null;
       if (showQTE && expectedKey && event.key.toLowerCase() === expectedKey) {
         setQteSucceeded(true);
   
         setTimeout(() => {
           setShowQTE(false);
-        }, 1000); // attendre 1 seconde pour afficher la réussite visuellement
+        }, 1000);
       }
     };
   
@@ -267,11 +273,12 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
     };
   }, [showQTE, scene]);
   
+  // Progress bar pour QTE
   useEffect(() => {
     let interval;
   
     if (showQTE) {
-      const duration = (endQTE - startQTE) * 1000; // en millisecondes
+      const duration = (endQTE - startQTE) * 1000;
       const startTime = Date.now();
   
       interval = setInterval(() => {
@@ -282,25 +289,54 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
         if (progress <= 0) {
           clearInterval(interval);
         }
-      }, 50); // actualisation fluide
+      }, 50);
     } else {
-      setQteProgress(100); // reset quand pas de QTE
+      setQteProgress(100);
     }
   
     return () => clearInterval(interval);
   }, [showQTE, startQTE, endQTE]);
 
+  // Gestion pause/play avec espace
   useEffect(() => {
     const handleKeyPress = (event) => {
-      if (event.key === ' ') { // Quand on appuie sur la barre d'espace
+      if (event.key === ' ') {
         if (isPaused) {
           videoRef.current.play();
           setIsPaused(false);
-          setPauseImage('');  // Supprimer l'image de pause
+          setPauseImage('');
         } else {
           videoRef.current.pause();
           setIsPaused(true);
-          setPauseImage('../../assets/photo/pause.JPG'); // Chemin de l'image de pause
+          setPauseImage('../../assets/photo/pause.JPG');
+        }
+      }
+      
+      // Touches pour contrôle du volume
+      if (event.key === 'ArrowUp' && volume < 1) {
+        const newVolume = Math.min(1, volume + 0.1);
+        setVolume(newVolume);
+        localStorage.setItem('videoVolume', newVolume);
+        if (videoRef.current) {
+          videoRef.current.volume = newVolume;
+        }
+      }
+      
+      if (event.key === 'ArrowDown' && volume > 0) {
+        const newVolume = Math.max(0, volume - 0.1);
+        setVolume(newVolume);
+        localStorage.setItem('videoVolume', newVolume);
+        if (videoRef.current) {
+          videoRef.current.volume = newVolume;
+        }
+      }
+      
+      // Touche M pour mute/unmute
+      if (event.key === 'm' || event.key === 'M') {
+        if (videoRef.current.muted) {
+          videoRef.current.muted = false;
+        } else {
+          videoRef.current.muted = true;
         }
       }
     };
@@ -309,8 +345,7 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
-  }, [isPaused]);
-  
+  }, [isPaused, volume]);
   
   return (
     <div className="video-container">
@@ -333,6 +368,37 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
       )}
   
       <audio ref={audioQTERef} src="../../assets/audio/QTE.mp3" preload="auto"></audio>
+      
+      {/* Contrôle du volume */}
+      <div className="volume-controls">
+        <button className="volume-button" onClick={toggleVolumeControl}>
+          {videoRef.current && videoRef.current.muted ? '🔇' : volume > 0.5 ? '🔊' : volume > 0 ? '🔉' : '🔈'}
+        </button>
+        
+        {showVolumeControl && (
+          <div className="volume-slider-container">
+            <input 
+              type="range" 
+              min="0" 
+              max="1" 
+              step="0.1" 
+              value={volume}
+              onChange={handleVolumeChange}
+              className="volume-slider"
+            />
+            <button 
+              className="mute-button"
+              onClick={() => {
+                if (videoRef.current) {
+                  videoRef.current.muted = !videoRef.current.muted;
+                }
+              }}
+            >
+              {videoRef.current && videoRef.current.muted ? 'Unmute' : 'Mute'}
+            </button>
+          </div>
+        )}
+      </div>
   
       {/* Affichage de la QTE */}
       {showQTE && (
@@ -346,12 +412,12 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
                 cy="50"
                 r="45"
                 style={{
-                  strokeDasharray: 282, // 2 * PI * r (2 * 3.14 * 45)
+                  strokeDasharray: 282,
                   strokeDashoffset: (282 * (100 - qteProgress)) / 100,
                 }}
               />
             </svg>
-            <div className="qte-text">{scene.keyboard[0]?.label.toUpperCase()}</div>
+            <div className="qte-text">{scene.keyboard && scene.keyboard.length > 0 ? scene.keyboard[0].label.toUpperCase() : ''}</div>
           </div>
         </div>
       )}
@@ -372,10 +438,10 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
   
             <button onClick={() => {
               if (videoRef.current) {
-                videoRef.current.currentTime = 0; // remet la vidéo au début
+                videoRef.current.currentTime = 0;
               }
-              localStorage.removeItem('videoSavedTime');  // remet le timecode à zéro
-              navigate('/playing'); // on recharge la page de jeu
+              localStorage.removeItem('videoSavedTime');
+              navigate('/playing');
             }}>Recommencer</button>
   
             <button onClick={() => {
@@ -389,23 +455,31 @@ const failTimecode = timecodeToSeconds(scene.fail_next_scene_timecode);
                 videoRef.current.currentTime -= 30;
               }
             }}>Reculer 30 sec</button>
+            
+            <button onClick={() => {
+              if (videoRef.current) {
+                videoRef.current.muted = !videoRef.current.muted;
+              }
+            }}>{videoRef.current && videoRef.current.muted ? 'Activer son' : 'Couper son'}</button>
           </div>
         )}
       </div>
+      
+      {/* Questions et choix */}
       {showQuestion && (
-  <div className="question-proposition-centered">
-    <div className="question-box">
-      <h2 className="question-text">{scene.question}</h2>
-      <div className="choices">
-        {scene.choices.map((choice, index) => (
-          <button key={index} onClick={() => handleChoiceClick(choice)}>
-            {choice.label}
-          </button>
-        ))}
-      </div>
-    </div>
-  </div>
-)}
+        <div className="question-proposition-centered">
+          <div className="question-box">
+            <h2 className="question-text">{scene.question}</h2>
+            <div className="choices">
+              {scene.choices.map((choice, index) => (
+                <button key={index} onClick={() => handleChoiceClick(choice)}>
+                  {choice.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
-}  
+}
