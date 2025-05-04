@@ -59,7 +59,7 @@ export default function App() {
       <div className={`trailer-background-container ${isFading ? 'fade-out' : ''}`}>
         <video
           className="background-trailer"
-          src="../../assets/video/bande_annonce.mp4"
+          src="../../assets/video/Teaser_V3.mp4"
           ref={(el) => setVideoRef(el)}
           autoPlay
           loop
